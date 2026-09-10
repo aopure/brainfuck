@@ -37,7 +37,7 @@ function executeProgram(program, input, loopMap) {
     switch (char) {
       case '>':
         pointer++;
-        if(pointer >= MEMORY_SIZE) return false;
+        if(pointer >= MEMORY_SIZE) throw Error('Memory pointer incremented above its limit');
         break;
 
       case '<':
