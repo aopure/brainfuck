@@ -17,7 +17,10 @@ function isValid(program, loopMap) {
     if(char === ']') {
       if(openCount === 0) return false;
       openCount--;
-      loopMap[loops.pop()] = i;
+      const p = loops.pop();
+
+      loopMap[p] = i;
+      loopMap[i] = p;
     }
   }
   
@@ -58,16 +61,12 @@ function executeProgram(program, input, loopMap) {
       case '[':
         if (memory[pointer] === 0) {
           i = loopMap[i];
-        } else {
-          loops.push(i);
         }
         break;
 
       case ']': 
-        if (memory[pointer] === 0) {
-          if (loopMap[loops[loops.length-1]] === i) loops.pop(); 
-        } else {
-          i = loops[loops.length-1];
+        if (memory[pointer] !== 0) {
+          i = loopMap[i];
         }
         break;
       
