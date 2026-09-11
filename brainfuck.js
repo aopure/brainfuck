@@ -1,5 +1,3 @@
-import { readFileSync } from 'fs'
-
 const MEMORY_SIZE = 30000;
 const CELL_MAX = 255;
 
@@ -27,12 +25,19 @@ function isValid(program, loopMap) {
   return !openCount;
 }
 
-function executeProgram(program, input, loopMap) {
+export function run(program, input) {
+  const loopMap = {};
+
+  if(!isValid(program, loopMap)) {
+    throw Error('Syntax error');
+  }
+
   const memory = new Array(MEMORY_SIZE).fill(0);
-  const loops = [];
 
   let inputPointer = 0;
   let pointer = 0;
+
+  let output = '';
 
   for (let i = 0; i < program.length; i++) {
     const char = program[i];
@@ -71,7 +76,7 @@ function executeProgram(program, input, loopMap) {
         break;
       
       case '.': 
-        process.stdout.write(String.fromCharCode(memory[pointer]));
+        output += String.fromCharCode(memory[pointer]);
         break;
       
       case ',': 
@@ -81,31 +86,12 @@ function executeProgram(program, input, loopMap) {
         } else {
           memory[pointer] = 0;
         }
-        break
+        break;
 
       default: 
         continue;
     }
   }
-}
-
-function main() {
-  if (process.argv.length < 3) {
-    console.log(`Usage brainfuck.js code.bf "input"`);
-    return 1;
-  }
   
-  const program = readFileSync(process.argv[2]).toString();
-  const input = process.argv[3] !== undefined ? process.argv[3] : '';  
-
-  const loopMap = {};
-
-  if(!isValid(program, loopMap)) {
-    console.log('The program is invalid');
-    return 1;
-  }
-  
-  executeProgram(program, input, loopMap);
+  return output;
 }
-
-main();
