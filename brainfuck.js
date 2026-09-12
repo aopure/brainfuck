@@ -1,5 +1,5 @@
 const MEMORY_SIZE = 30000;
-const CELL_MAX = 255;
+const CELL_MAX = 256;
 
 function isValid(program, loopMap) {
   const loops = [];
