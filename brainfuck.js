@@ -54,13 +54,11 @@ export function run(program, input) {
         break;
 
       case '+':
-        memory[pointer]++;
-        if (memory[pointer] > CELL_MAX) memory[pointer] = 0;
+        memory[pointer] = (memory[pointer] + 1 + CELL_MAX) % CELL_MAX;
         break;
 
       case '-':
-        memory[pointer]--;
-        if (memory[pointer] < 0) memory[pointer] = CELL_MAX;
+        memory[pointer] = (memory[pointer] - 1 + CELL_MAX) % CELL_MAX
         break;
 
       case '[':
